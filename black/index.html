@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>invis.me | spirtual dhikr</title>
+
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #171a21;
+      --text: #e6e9ef;
+      --muted: #9aa3b2;
+      --accent: #7dd3fc;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    header {
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .gallery {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .card-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    
+    /* Mobile-friendly header adjustments */
+    @media (max-width: 768px) {
+      header {
+        text-align: center;       /* center header content */
+        margin-bottom: 1.5rem;    /* slightly smaller spacing under header */
+        padding: 0 1rem;          /* add horizontal padding so text doesn’t touch edges */
+      }
+    
+      header h1 {
+        font-size: 1.75rem;       /* slightly smaller heading for mobile */
+      }
+    
+      header p {
+        font-size: 0.95rem;       /* adjust paragraph size for small screens */
+      }
+    }
+    /* Sticky footer on desktop, natural height on mobile */
+    @media (max-width: 768px) {
+      body {
+        min-height: auto;       /* remove forced viewport height */
+        display: block;         /* normal flow for mobile zoom */
+      }
+    
+      main.gallery {
+        display: grid;          /* keep your grid intact */
+        grid-template-columns: 1fr; /* single column on small screens */
+        gap: 1rem;
+        max-width: 100%;
+        margin: 0 auto;
+      }
+    
+      footer {
+        margin-top: 2rem;       /* simple spacing below content */
+      }
+    
+      header {
+        text-align: center;
+        padding: 0 1rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>DARK GFX WORK</h1>
+    <p>Work that captures the essence of darkness.</p>
+  </header>
+  
+  <main class="gallery">
+    <!-- GALLERY:START -->
+    <!-- GALLERY:END -->
+  </main>
+
+  <footer>
+    © invis.me | darkness & shadows
+  </footer>
+
+</body>
+</html>
