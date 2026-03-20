@@ -98,6 +98,23 @@
       color: var(--muted);
       font-size: 0.85rem;
     }
+    
+    /* Mobile-friendly header adjustments */
+    @media (max-width: 768px) {
+      header {
+        text-align: center;       /* center header content */
+        margin-bottom: 1.5rem;    /* slightly smaller spacing under header */
+        padding: 0 1rem;          /* add horizontal padding so text doesn’t touch edges */
+      }
+    
+      header h1 {
+        font-size: 1.75rem;       /* slightly smaller heading for mobile */
+      }
+    
+      header p {
+        font-size: 0.95rem;       /* adjust paragraph size for small screens */
+      }
+    }
   </style>
 </head>
 
