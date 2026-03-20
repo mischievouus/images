@@ -115,31 +115,32 @@
         font-size: 0.95rem;       /* adjust paragraph size for small screens */
       }
     }
-    /* Body fills viewport, footer at bottom if content is short */
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+    /* Sticky footer on desktop, natural height on mobile */
+    @media (max-width: 768px) {
+      body {
+        min-height: auto;       /* remove forced viewport height */
+        display: block;         /* normal flow for mobile zoom */
+      }
     
-    body {
-      display: flex;
-      flex-direction: column;
-      background: var(--bg); /* keep dark gray */
-      min-height: 100vh;      /* ensures full viewport height */
-    }
+      main.gallery {
+        display: grid;          /* keep your grid intact */
+        grid-template-columns: 1fr; /* single column on small screens */
+        gap: 1rem;
+        max-width: 100%;
+        margin: 0 auto;
+      }
     
-    main.gallery {
-      /* Only take the space needed for content */
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+      footer {
+        margin-top: 2rem;       /* simple spacing below content */
+      }
     
-    footer {
-      margin-top: auto; /* pushes footer down if content is short */
+      header {
+        text-align: center;
+        padding: 0 1rem;
+        margin-bottom: 1.5rem;
+      }
     }
+
   </style>
 </head>
 
