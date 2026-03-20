@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>invis.me | spiritual dhikr</title>
+  <title>invis.me | spirtual dhikr</title>
 
   <style>
     :root {
@@ -21,25 +21,17 @@
       padding: 0;
     }
 
-    html, body {
-      height: 100%;
-    }
-
     body {
       font-family: system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
       padding: 2rem;
     }
 
     header {
       max-width: 1200px;
       margin: 0 auto 2rem;
-      text-align: center;
     }
 
     h1 {
@@ -53,18 +45,14 @@
       margin-top: 0.5rem;
     }
 
-    /* Main gallery container fills remaining space and centers content vertically if short */
-    main.gallery {
-      flex: 1;
+    .gallery {
+      max-width: 1200px;
+      margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      align-content: center; /* vertical centering for few images */
     }
 
-    /* Cards */
     .card {
       background: var(--card);
       border-radius: var(--radius);
@@ -106,7 +94,7 @@
 
     footer {
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 3rem;
       color: var(--muted);
       font-size: 0.85rem;
     }
@@ -116,17 +104,17 @@
 <body>
 
   <header>
-    <h1>SPIRTUAL DHIKR</h1>
+    <h1>SPIRITUAL DHIKR</h1>
     <p>Fragments of reflection — fleeting, like bubbles on water.</p>
   </header>
-
+  
   <main class="gallery">
     <!-- GALLERY:START -->
     <!-- GALLERY:END -->
   </main>
 
   <footer>
-    © invis.me | spirtual dhikr
+    © invis.me | reflections & signs
   </footer>
 
 </body>
