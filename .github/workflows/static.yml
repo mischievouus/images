@@ -1,34 +1,43 @@
-name: Build and Deploy Gallery
+name: Deploy static content to Pages
 
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Create CNAME for custom domain
+        run: echo "images.invis.me" > CNAME
+
       - name: Generate gallery HTML
         run: |
           echo "Generating gallery..."
-
           ITEMS=""
-
           for file in poems/*.{jpg,jpeg,png,webp}; do
             [ -e "$file" ] || continue
-
             name=$(basename "$file")
             title=$(basename "$file" | sed 's/\.[^.]*$//' | sed 's/-/ /g')
-
             ITEMS="$ITEMS
             <article class=\"card\">
               <img src=\"$name\" alt=\"$title poem\" loading=\"lazy\" />
@@ -38,13 +47,11 @@ jobs:
               </div>
             </article>"
           done
-
           awk -v items="$ITEMS" '
             /<!-- GALLERY:START -->/ { print; print items; next }
             /<!-- GALLERY:END -->/ { print; next }
             { print }
           ' poems/index.html > poems/index.tmp.html
-
           mv poems/index.tmp.html poems/index.html
 
       - name: Commit updated gallery
@@ -55,27 +62,14 @@ jobs:
           git commit -m "Auto-update gallery" || echo "No changes"
           git push
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Create CNAME
-        run: echo "images.invis.me" > CNAME
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
           name: pages-artifact
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
         with:
           artifact_name: pages-artifact
