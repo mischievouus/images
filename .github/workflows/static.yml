@@ -1,45 +1,78 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Build and Deploy Gallery
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Generate gallery HTML
+        run: |
+          echo "Generating gallery..."
+
+          ITEMS=""
+
+          for file in poems/*.{jpg,jpeg,png,webp}; do
+            [ -e "$file" ] || continue
+
+            name=$(basename "$file")
+            title=$(basename "$file" | sed 's/\.[^.]*$//' | sed 's/-/ /g')
+
+            ITEMS="$ITEMS
+            <article class=\"card\">
+              <img src=\"$name\" alt=\"$title poem\" loading=\"lazy\" />
+              <div class=\"card-content\">
+                <div class=\"card-title\">$title</div>
+                <a class=\"card-link\" href=\"$name\" target=\"_blank\">View full</a>
+              </div>
+            </article>"
+          done
+
+          awk -v items="$ITEMS" '
+            /<!-- GALLERY:START -->/ { print; print items; next }
+            /<!-- GALLERY:END -->/ { print; next }
+            { print }
+          ' poems/index.html > poems/index.tmp.html
+
+          mv poems/index.tmp.html poems/index.html
+
+      - name: Commit updated gallery
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add poems/index.html
+          git commit -m "Auto-update gallery" || echo "No changes"
+          git push
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Create CNAME for custom domain
+
+      - name: Create CNAME
         run: echo "images.invis.me" > CNAME
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
+
+      - name: Deploy
         uses: actions/deploy-pages@v4
