@@ -115,6 +115,21 @@
         font-size: 0.95rem;       /* adjust paragraph size for small screens */
       }
     }
+    
+    /* Sticky footer: always at the bottom */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* ensures body fills viewport */
+    }
+    
+    main.gallery {
+      flex: 1; /* gallery expands to push footer down */
+    }
+    
+    footer {
+      margin-top: auto; /* pushes footer to bottom */
+    }
   </style>
 </head>
 
