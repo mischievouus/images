@@ -115,20 +115,30 @@
         font-size: 0.95rem;       /* adjust paragraph size for small screens */
       }
     }
+    /* Body fills viewport, footer at bottom if content is short */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
     
-    /* Sticky footer: always at the bottom */
     body {
       display: flex;
       flex-direction: column;
-      min-height: 100vh; /* ensures body fills viewport */
+      background: var(--bg); /* keep dark gray */
+      min-height: 100vh;      /* ensures full viewport height */
     }
     
     main.gallery {
-      flex: 1; /* gallery expands to push footer down */
+      /* Only take the space needed for content */
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     
     footer {
-      margin-top: auto; /* pushes footer to bottom */
+      margin-top: auto; /* pushes footer down if content is short */
     }
   </style>
 </head>
