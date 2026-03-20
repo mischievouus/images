@@ -61,6 +61,33 @@ jobs:
           ' poems/index.html > poems/index.tmp.html
           mv poems/index.tmp.html poems/index.html
 
+      # Generate gallery inside the artifact for folder "black" (no push)
+      - name: Generate gallery HTML for black
+        run: |
+          echo "Generating gallery for black..."
+          ITEMS=""
+          for file in black/*.{jpg,jpeg,png,webp}; do
+            [ -e "$file" ] || continue
+            name=$(basename "$file")
+            title=$(basename "$file" | sed 's/\.[^.]*$//' | sed 's/-/ /g')
+            ITEMS="$ITEMS
+            <article class=\"card\">
+              <img src=\"$name\" alt=\"$title\" loading=\"lazy\" />
+              <div class=\"card-content\">
+                <div class=\"card-title\">$title</div>
+                <a class=\"card-link\" href=\"$name\" target=\"_blank\">View full</a>
+              </div>
+            </article>"
+          done
+      
+          awk -v items="$ITEMS" '
+            /<!-- GALLERY:START -->/ { print; print items; next }
+            /<!-- GALLERY:END -->/ { print; next }
+            { print }
+          ' black/index.html > black/index.tmp.html
+      
+          mv black/index.tmp.html black/index.html
+
       # Upload artifact for GitHub Pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
