@@ -21,17 +21,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      # Checkout repo
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: false  # ensures we don’t rely on default creds
 
+      # Setup GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # Ensure CNAME exists
       - name: Create CNAME for custom domain
         run: echo "images.invis.me" > CNAME
 
+      # Generate gallery inside the artifact (no push)
       - name: Generate gallery HTML
         run: |
           echo "Generating gallery..."
@@ -49,27 +53,22 @@ jobs:
               </div>
             </article>"
           done
+
           awk -v items="$ITEMS" '
             /<!-- GALLERY:START -->/ { print; print items; next }
             /<!-- GALLERY:END -->/ { print; next }
             { print }
           ' poems/index.html > poems/index.tmp.html
           mv poems/index.tmp.html poems/index.html
-          
-      - name: Commit updated gallery
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add poems/index.html
-          git commit -m "Auto-update gallery" || echo "No changes"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
 
+      # Upload artifact for GitHub Pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
           name: pages-artifact
 
+      # Deploy artifact to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
